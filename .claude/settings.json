@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Supabase__apply_migration",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(node -e ' *)",
+      "Bash(sed -i '' 's/activeClientData\\\\.profile\\\\./activeClientData.crmProfile?./g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(sed -i '' 's/activeClientData\\\\.scores\\\\./activeClientData.scores?./g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(sed -i '' 's/activeClientData\\\\.behavior\\\\./activeClientData.behavior?./g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(sed -i '' 's/activeClientData\\\\.strategy\\\\./activeClientData.strategy?./g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(sed -i '' 's/activeClientData\\\\.qualification\\\\./activeClientData.qualification?./g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(sed -i '' 's/activeClientData\\\\.crmProfile?\\\\.clientSegmentation\\\\.replace\\('\\\\''_'\\\\'', '\\\\'' '\\\\''\\)/activeClientData.crmProfile?.clientSegmentation?.replace\\('\\\\''_'\\\\'', '\\\\'' '\\\\''\\)/g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(sed -i '' 's/activeClientData\\\\.crmProfile?\\\\.lifetimeValueEst\\\\.toLocaleString\\(\\)/activeClientData.crmProfile?.lifetimeValueEst?.toLocaleString\\(\\) ?? 0/g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(sed -i '' 's/activeClientData\\\\.qualification?\\\\.buyingSignals\\\\.map/activeClientData.qualification?.buyingSignals?.map/g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(sed -i '' 's/activeClientData\\\\.memories\\\\.map/\\(activeClientData.memories ?? []\\).map/g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(sed -i '' 's/memories: \\\\[newMem, \\\\.\\\\.\\\\.activeClientData\\\\.memories\\\\]/memories: [newMem, ...\\(activeClientData.memories ?? []\\)]/g' /Users/mdamirhossain/ViveScript-Solutions/projects/rag_agent/src/app/admin/crm/page.tsx)",
+      "Bash(grep -v \"^$\\\\|node_modules\\\\|\\\\.next\")"
+    ]
+  }
+}
