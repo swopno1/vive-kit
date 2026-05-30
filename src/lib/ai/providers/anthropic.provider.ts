@@ -28,7 +28,7 @@ export class AnthropicProvider extends BaseAIProvider {
 
     return {
       content: text,
-      model: 'claude-3-5-sonnet' as AIModelType,
+      model: modelId as AIModelType,
       usage: {
         promptTokens: (usage as Record<string, any>)?.promptTokens ?? 0,
         completionTokens: (usage as Record<string, any>)?.completionTokens ?? 0,

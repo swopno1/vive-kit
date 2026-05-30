@@ -21,8 +21,8 @@ export class AIService implements AIServiceLayer {
    */
   private routeModel(config: AIRequestConfig, userConfig?: UserProviderConfig): AIModelType {
     if (userConfig?.model) return userConfig.model as AIModelType;
-    if (config.complexity === 'high') return 'gemini-2.0-pro';
-    if (ROUTING_RULES.TASKS.REASONING.includes(config.task as any)) return 'gemini-2.0-pro';
+    if (config.complexity === 'high') return 'gemini-2.5-pro';
+    if (ROUTING_RULES.TASKS.REASONING.includes(config.task as any)) return 'gemini-2.5-pro';
     return ROUTING_RULES.DEFAULT_MODEL;
   }
 
@@ -46,7 +46,7 @@ export class AIService implements AIServiceLayer {
     const messages = PromptBuilder.buildMessages(analysisConfig);
     const provider = this.resolveProvider(userConfig);
     // Prefer user-chosen model; fall back to flash for fast analysis
-    const model = (userConfig?.model as AIModelType) || 'gemini-2.0-flash';
+    const model = (userConfig?.model as AIModelType) || 'gemini-2.5-flash';
 
     return await provider.generate({
       messages,

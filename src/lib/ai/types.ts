@@ -1,7 +1,19 @@
 import { z } from 'zod';
 import { BusinessContext, CustomerProfile, TonePreference } from '../../types';
 
-export type AIModelType = 'gemini-2.0-flash' | 'gemini-2.0-pro' | 'gpt-4o' | 'claude-3-5-sonnet';
+export type AIModelType =
+  // Google Gemini
+  | 'gemini-2.5-flash'
+  | 'gemini-2.5-pro'
+  | 'gemini-2.0-flash'
+  // OpenAI
+  | 'gpt-4.1'
+  | 'gpt-4.1-mini'
+  | 'gpt-4o'
+  // Anthropic
+  | 'claude-3-7-sonnet-20250219'
+  | 'claude-3-5-sonnet-20241022'
+  | 'claude-3-5-haiku-20241022';
 
 export interface ModelMetadata {
   id: AIModelType;
