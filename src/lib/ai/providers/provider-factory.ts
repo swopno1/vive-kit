@@ -19,8 +19,10 @@ export interface UserProviderConfig {
  */
 export function createProvider(config?: UserProviderConfig): AIProvider {
   if (!config) {
-    if (env.ANTHROPIC_API_KEY) return new AnthropicProvider(env.ANTHROPIC_API_KEY);
-    if (env.OPENAI_API_KEY) return new OpenAIProvider(env.OPENAI_API_KEY);
+    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    const openaiKey = process.env.OPENAI_API_KEY;
+    if (anthropicKey) return new AnthropicProvider(anthropicKey);
+    if (openaiKey) return new OpenAIProvider(openaiKey);
     return new GeminiProvider();
   }
 
