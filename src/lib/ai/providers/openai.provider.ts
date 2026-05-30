@@ -15,7 +15,7 @@ export class OpenAIProvider extends BaseAIProvider {
 
   async generate(request: GenerationRequest): Promise<AIResponse> {
     const startTime = Date.now();
-    const modelId = (request.options?.model || 'gpt-4o') as string;
+    const modelId = (request.options?.model || 'gpt-5.5') as string;
 
     const { text, usage } = await generateText({
       model: this.client(modelId),
@@ -39,7 +39,7 @@ export class OpenAIProvider extends BaseAIProvider {
   }
 
   async stream(request: GenerationRequest): Promise<ReadableStream> {
-    const modelId = (request.options?.model || 'gpt-4o') as string;
+    const modelId = (request.options?.model || 'gpt-5.5') as string;
 
     const result = await streamText({
       model: this.client(modelId),

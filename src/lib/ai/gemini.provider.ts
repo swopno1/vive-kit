@@ -20,7 +20,7 @@ export class GeminiProvider extends BaseAIProvider {
 
   async generate(request: GenerationRequest): Promise<AIResponse> {
     const startTime = Date.now();
-    const modelId = request.options?.model || 'gemini-2.0-flash';
+    const modelId = request.options?.model || 'gemini-3.5-flash';
 
     const { text, usage } = await generateText({
       model: this.google(modelId),
@@ -44,7 +44,7 @@ export class GeminiProvider extends BaseAIProvider {
   }
 
   async stream(request: GenerationRequest): Promise<ReadableStream> {
-    const modelId = request.options?.model || 'gemini-2.0-flash';
+    const modelId = request.options?.model || 'gemini-3.5-flash';
 
     const result = await streamText({
       model: this.google(modelId),

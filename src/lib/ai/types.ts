@@ -2,18 +2,20 @@ import { z } from 'zod';
 import { BusinessContext, CustomerProfile, TonePreference } from '../../types';
 
 export type AIModelType =
-  // Google Gemini
-  | 'gemini-2.5-flash'
-  | 'gemini-2.5-pro'
-  | 'gemini-2.0-flash'
-  // OpenAI
-  | 'gpt-4.1'
-  | 'gpt-4.1-mini'
-  | 'gpt-4o'
-  // Anthropic
-  | 'claude-3-7-sonnet-20250219'
-  | 'claude-3-5-sonnet-20241022'
-  | 'claude-3-5-haiku-20241022';
+  // ── Google Gemini ──────────────────────────────────────────
+  | 'gemini-3.5-flash'            // Latest flagship — agentic, fast
+  | 'gemini-3.1-pro'              // Advanced reasoning & problem-solving
+  | 'gemini-3.1-flash'            // Balanced speed + intelligence
+  | 'gemini-2.5-flash'            // Previous gen stable
+  // ── OpenAI ────────────────────────────────────────────────
+  | 'gpt-5.5'                     // Latest frontier reasoning + OS-level use
+  | 'o3'                          // Extended reasoning (thinks longer)
+  | 'gpt-4.1'                     // Previous flagship
+  | 'gpt-4o'                      // Stable multimodal
+  // ── Anthropic Claude ──────────────────────────────────────
+  | 'claude-opus-4-8'             // Latest enterprise frontier
+  | 'claude-sonnet-4-6'           // Balanced coding + agentic workflows
+  | 'claude-haiku-4-5';           // Ultra-fast low-latency
 
 export interface ModelMetadata {
   id: AIModelType;

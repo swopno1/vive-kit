@@ -15,7 +15,7 @@ export class AnthropicProvider extends BaseAIProvider {
 
   async generate(request: GenerationRequest): Promise<AIResponse> {
     const startTime = Date.now();
-    const modelId = (request.options?.model || 'claude-3-5-sonnet-20241022') as string;
+    const modelId = (request.options?.model || 'claude-opus-4-8') as string;
 
     const { text, usage } = await generateText({
       model: this.client(modelId),
@@ -39,7 +39,7 @@ export class AnthropicProvider extends BaseAIProvider {
   }
 
   async stream(request: GenerationRequest): Promise<ReadableStream> {
-    const modelId = (request.options?.model || 'claude-3-5-sonnet-20241022') as string;
+    const modelId = (request.options?.model || 'claude-opus-4-8') as string;
 
     const result = await streamText({
       model: this.client(modelId),

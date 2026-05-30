@@ -44,48 +44,51 @@ const PROVIDERS: AnyProvider[] = [
   {
     id: 'google',
     name: 'Google Gemini',
-    description: 'Free tier via AI Studio. Fastest throughput.',
+    description: 'Free tier via AI Studio. Best speed + context.',
     docsUrl: 'https://aistudio.google.com/app/apikey',
     docsLabel: 'Get key on Google AI Studio →',
     gradient: 'from-blue-500 via-cyan-500 to-teal-500',
     models: [
-      { id: 'gemini-2.5-flash',   label: 'Gemini 2.5 Flash',  badge: 'Latest' },
-      { id: 'gemini-2.5-pro',     label: 'Gemini 2.5 Pro',    badge: 'Powerful' },
-      { id: 'gemini-2.0-flash',   label: 'Gemini 2.0 Flash',  badge: 'Stable' },
+      { id: 'gemini-3.5-flash', label: 'Gemini 3.5 Flash', badge: 'Latest' },
+      { id: 'gemini-3.1-pro',   label: 'Gemini 3.1 Pro',   badge: 'Powerful' },
+      { id: 'gemini-3.1-flash', label: 'Gemini 3.1 Flash',  badge: 'Fast' },
+      { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash',  badge: 'Stable' },
     ],
     active: true,
   },
   {
     id: 'openai',
     name: 'OpenAI',
-    description: 'Requires prepaid credits. Best coding quality.',
+    description: 'Requires prepaid credits. Best complex reasoning.',
     docsUrl: 'https://platform.openai.com/api-keys',
     docsLabel: 'Get key on OpenAI Platform →',
     gradient: 'from-emerald-500 via-green-500 to-lime-500',
     models: [
-      { id: 'gpt-4.1',       label: 'GPT-4.1',      badge: 'Latest' },
-      { id: 'gpt-4.1-mini',  label: 'GPT-4.1 Mini', badge: 'Fast' },
-      { id: 'gpt-4o',        label: 'GPT-4o',        badge: 'Stable' },
+      { id: 'gpt-5.5', label: 'GPT-5.5',     badge: 'Latest' },
+      { id: 'o3',      label: 'OpenAI o3',    badge: 'Reasoning' },
+      { id: 'gpt-4.1', label: 'GPT-4.1',     badge: 'Stable' },
+      { id: 'gpt-4o',  label: 'GPT-4o',      badge: 'Stable' },
     ],
     active: true,
   },
   {
     id: 'anthropic',
     name: 'Anthropic',
-    description: 'Requires paid account. Best for complex reasoning.',
+    description: 'Requires paid account. Best for document analysis.',
     docsUrl: 'https://console.anthropic.com/settings/keys',
     docsLabel: 'Get key on Anthropic Console →',
     gradient: 'from-orange-500 via-amber-500 to-yellow-500',
     models: [
-      { id: 'claude-3-7-sonnet-20250219', label: 'Claude 3.7 Sonnet',  badge: 'Latest' },
-      { id: 'claude-3-5-sonnet-20241022', label: 'Claude 3.5 Sonnet',  badge: 'Stable' },
-      { id: 'claude-3-5-haiku-20241022',  label: 'Claude 3.5 Haiku',   badge: 'Fast' },
+      { id: 'claude-opus-4-8',   label: 'Claude Opus 4.8',   badge: 'Latest' },
+      { id: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6', badge: 'Balanced' },
+      { id: 'claude-haiku-4-5',  label: 'Claude Haiku 4.5',  badge: 'Fast' },
     ],
     active: true,
   },
-  { id: 'mistral', name: 'Mistral',  active: false },
-  { id: 'cohere',  name: 'Cohere',   active: false },
-  { id: 'xai',     name: 'xAI Grok', active: false },
+  // Coming-soon providers
+  { id: 'meta',     name: 'Meta Llama 4',  active: false },
+  { id: 'deepseek', name: 'DeepSeek R1',   active: false },
+  { id: 'xai',      name: 'xAI Grok',      active: false },
 ];
 
 const BADGE_STYLES: Record<string, string> = {
@@ -93,6 +96,8 @@ const BADGE_STYLES: Record<string, string> = {
   Powerful:  'bg-blue-500/20 text-blue-300',
   Fast:      'bg-emerald-500/20 text-emerald-300',
   Stable:    'bg-slate-600/40 text-slate-400',
+  Reasoning: 'bg-amber-500/20 text-amber-300',
+  Balanced:  'bg-cyan-500/20 text-cyan-300',
 };
 
 // ─── Component ───────────────────────────────────────────────────────────────

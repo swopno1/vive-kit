@@ -76,7 +76,7 @@ export function Sidebar({ onClose }: SidebarProps) {
   // Badge label: shows user's chosen model or default
   const providerBadge = aiConfig
     ? `${PROVIDER_LABELS[aiConfig.provider] ?? aiConfig.provider} · ${aiConfig.model.split('-').slice(0, 3).join('-')}`
-    : 'Gemini 2.0 · Default key';
+    : 'Gemini 3.5 Flash · Default key';
 
   return (
     <>

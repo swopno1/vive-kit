@@ -214,7 +214,7 @@ export default function DashboardHome() {
           </div>
           <div className="flex items-center gap-1.5 text-[10px] text-slate-600 font-semibold uppercase tracking-widest">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="hidden sm:block">Gemini 2.0 Active</span>
+            <span className="hidden sm:block">Gemini 3.5 Flash Active</span>
           </div>
         </header>
 
