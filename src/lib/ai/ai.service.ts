@@ -29,7 +29,15 @@ export class AIService implements AIServiceLayer {
   /** Returns the correct provider — user-supplied key beats env var. */
   private resolveProvider(userConfig?: UserProviderConfig): AIProvider {
     if (userConfig) return createProvider(userConfig);
-    return this.geminiProvider;
+    return createProvider(); // respects env-key fallback chain
+  }
+
+  /** Maps a routed model ID to a valid model for the active provider. */
+  private normalizeModel(model: AIModelType, provider: AIProvider): AIModelType {
+    const name = (provider as any).name as string;
+    if (name === 'Anthropic' && model.startsWith('gemini-')) return 'claude-sonnet-4-6';
+    if (name === 'OpenAI' && model.startsWith('gemini-')) return 'gpt-4o';
+    return model;
   }
 
   /**
@@ -45,8 +53,7 @@ export class AIService implements AIServiceLayer {
     const systemPrompt = PromptBuilder.buildSystemInstructions(analysisConfig);
     const messages = PromptBuilder.buildMessages(analysisConfig);
     const provider = this.resolveProvider(userConfig);
-    // Prefer user-chosen model; fall back to flash for fast analysis
-    const model = (userConfig?.model as AIModelType) || 'gemini-3.5-flash';
+    const model = this.normalizeModel((userConfig?.model as AIModelType) || 'gemini-3.5-flash', provider);
 
     return await provider.generate({
       messages,
@@ -58,8 +65,8 @@ export class AIService implements AIServiceLayer {
 
   async generate(config: AIRequestConfig, userConfig?: UserProviderConfig): Promise<AIResponse> {
     const requestId = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'manual-id-' + Date.now();
-    const model = this.routeModel(config, userConfig);
     const provider = this.resolveProvider(userConfig);
+    const model = this.normalizeModel(this.routeModel(config, userConfig), provider);
 
     // Phase 6: Semantic Memory Retrieval
     let enrichedConfig = { ...config };
@@ -119,8 +126,8 @@ export class AIService implements AIServiceLayer {
   }
 
   async stream(config: AIRequestConfig, userConfig?: UserProviderConfig): Promise<ReadableStream> {
-    const model = this.routeModel(config, userConfig);
     const provider = this.resolveProvider(userConfig);
+    const model = this.normalizeModel(this.routeModel(config, userConfig), provider);
 
     // Phase 6: Semantic Memory Retrieval (simplified for streaming)
     let enrichedConfig = { ...config };

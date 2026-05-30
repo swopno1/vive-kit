@@ -15,17 +15,17 @@ export interface UserProviderConfig {
 /**
  * Returns an AIProvider instance for the given config.
  * When a user-supplied key is present it takes precedence over env vars.
- * Falls back to the Gemini env-var provider when no user config is given.
+ * Falls back through Anthropic → OpenAI → Gemini based on which env keys exist.
  */
 export function createProvider(config?: UserProviderConfig): AIProvider {
   if (!config) {
-    // Default: env-var Gemini
+    if (env.ANTHROPIC_API_KEY) return new AnthropicProvider(env.ANTHROPIC_API_KEY);
+    if (env.OPENAI_API_KEY) return new OpenAIProvider(env.OPENAI_API_KEY);
     return new GeminiProvider();
   }
 
   switch (config.provider) {
     case 'google':
-      // Re-instantiate Gemini with the user-supplied key
       return new GeminiProvider(config.apiKey);
     case 'openai':
       return new OpenAIProvider(config.apiKey);
