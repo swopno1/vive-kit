@@ -14,11 +14,17 @@ export class AIService implements AIServiceLayer {
   private fallbackProvider: AIProvider;
 
   constructor() {
-    if (process.env.ANTHROPIC_API_KEY) {
-      this.fallbackProvider = new AnthropicProvider(process.env.ANTHROPIC_API_KEY);
-    } else if (process.env.OPENAI_API_KEY) {
-      this.fallbackProvider = new OpenAIProvider(process.env.OPENAI_API_KEY);
+    const anthropicKey = process.env.ANTHROPIC_API_KEY?.trim();
+    const openaiKey = process.env.OPENAI_API_KEY?.trim();
+
+    if (anthropicKey) {
+      console.log('[AIService] Using Anthropic provider');
+      this.fallbackProvider = new AnthropicProvider(anthropicKey);
+    } else if (openaiKey) {
+      console.log('[AIService] Using OpenAI provider');
+      this.fallbackProvider = new OpenAIProvider(openaiKey);
     } else {
+      console.warn('[AIService] No Anthropic or OpenAI key found, falling back to Gemini (will fail if billing blocked)');
       this.fallbackProvider = new GeminiProvider();
     }
   }
