@@ -2,13 +2,15 @@ import { PromptModule } from '../../types';
 
 const TONE_GUIDELINES: Record<string, string> = {
   professional: "Maintain a high level of politeness, use structured language, and avoid slang. Focus on competence and reliability.",
+  casual: "Warm and approachable without being overly formal. Use natural language and conversational phrasing.",
+  empathetic: "Acknowledge emotions and concerns. Show understanding and validate the customer's experience before offering solutions.",
+  urgent: "Direct and immediate. Cut to the point, prioritize action, and communicate with clear urgency.",
   strategic: "Focus on long-term value, business alignment, and mutual growth. Use analytical and forward-looking language.",
   friendly: "Warm, approachable, and personal. Use natural language, gentle phrasing, and light emojis where appropriate.",
   technical: "Precise, data-driven, and detailed. Focus on specifications, logic, and factual accuracy.",
   'sales-focused': "Persuasive, benefit-oriented, and action-driven. Focus on solving pain points and creating urgency.",
   strict: "Direct, firm, and adherence-focused. Clearly state rules, boundaries, and consequences without ambiguity.",
-  concise: "Ultra-brief and efficient. Eliminate filler and get straight to the point.",
-  premium: "Sophisticated, exclusive, and high-value. Use elegant phrasing and focus on quality and superior experience."
+  concise: "Ultra-brief and efficient. Eliminate filler and get straight to the point."
 };
 
 export const toneControl: PromptModule = {

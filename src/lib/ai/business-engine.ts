@@ -26,7 +26,7 @@ export class BusinessIntelligenceEngine {
       websiteUrl: 'https://www.vivescriptsolutions.com',
       pricingInstructions: 'Custom Web App MVP starting from $4,900. Google Workspace and Workflow Automations from $1,500. Enterprise AI Enablement from $7,500/mo. Authorized discounts strictly capped at 10% with 6-month minimum retainer. Never promise unlimited custom integrations without formal scope documents.',
       generalContext: 'Tailored technology partner specialized in Next.js Custom Web Apps, Google Workspace & Sheets automations, n8n/Make Workflow Automation, and secure AI workflow enablement. We help clients replace messy spreadsheet architectures with secure, scalable operational software systems.',
-      tonePreference: 'premium',
+      tonePreference: 'professional',
       pricingPhilosophy: 'Value-driven positioning. We sell operational leverage and hours saved, not developer labor. Avoid hourly work unless explicitly approved; prioritize flat-rate productized milestones or monthly retainers.',
       negotiationStrategy: 'Calm, authoritative, values-oriented. Highlight the cost of manual errors (such as scope creep and reporting delays) as the key driver for automation.',
       deliveryProcess: 'Phase 1: Architecture layout & blueprint (7-14 days). Phase 2: Core workflow integrations & sandbox MVP (21-30 days). Phase 3: Customer workspace launch (14 days). Iterative milestone-based releases.',

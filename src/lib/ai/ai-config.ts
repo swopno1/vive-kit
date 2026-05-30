@@ -162,7 +162,7 @@ export const MODEL_REGISTRY: Record<AIModelType, ModelMetadata> = {
 
 // 3. Routing Rules
 export const ROUTING_RULES = {
-  DEFAULT_MODEL: 'gemini-3.5-flash' as AIModelType,
+  DEFAULT_MODEL: 'claude-sonnet-4-6' as AIModelType,
   COMPLEXITY_THRESHOLD: 'high',
   TASKS: {
     FAST: ['classify', 'summarize', 'extract'] as const,

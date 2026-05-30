@@ -1,5 +1,7 @@
 import { AIServiceLayer, AIRequestConfig, AIResponse, AIModelType, AIProvider } from './types';
 import { GeminiProvider } from './gemini.provider';
+import { AnthropicProvider } from './providers/anthropic.provider';
+import { OpenAIProvider } from './providers/openai.provider';
 import { PromptBuilder } from './prompt-builder';
 import { ROUTING_RULES, AI_CONFIG } from './ai-config';
 import { AILogger } from './ai-logger';
@@ -9,10 +11,16 @@ import { contextAssembler } from './memory/context-assembler';
 import { createProvider, UserProviderConfig } from './providers/provider-factory';
 
 export class AIService implements AIServiceLayer {
-  private geminiProvider: GeminiProvider;
+  private fallbackProvider: AIProvider;
 
   constructor() {
-    this.geminiProvider = new GeminiProvider();
+    if (process.env.ANTHROPIC_API_KEY) {
+      this.fallbackProvider = new AnthropicProvider(process.env.ANTHROPIC_API_KEY);
+    } else if (process.env.OPENAI_API_KEY) {
+      this.fallbackProvider = new OpenAIProvider(process.env.OPENAI_API_KEY);
+    } else {
+      this.fallbackProvider = new GeminiProvider();
+    }
   }
 
   /**
@@ -21,15 +29,13 @@ export class AIService implements AIServiceLayer {
    */
   private routeModel(config: AIRequestConfig, userConfig?: UserProviderConfig): AIModelType {
     if (userConfig?.model) return userConfig.model as AIModelType;
-    if (config.complexity === 'high') return 'gemini-3.1-pro';
-    if (ROUTING_RULES.TASKS.REASONING.includes(config.task as any)) return 'gemini-3.1-pro';
     return ROUTING_RULES.DEFAULT_MODEL;
   }
 
-  /** Returns the correct provider — user-supplied key beats env var. */
+  /** Returns the correct provider — user-supplied key beats env var, then fallback. */
   private resolveProvider(userConfig?: UserProviderConfig): AIProvider {
     if (userConfig) return createProvider(userConfig);
-    return createProvider(); // respects env-key fallback chain
+    return this.fallbackProvider;
   }
 
   /** Maps a routed model ID to a valid model for the active provider. */

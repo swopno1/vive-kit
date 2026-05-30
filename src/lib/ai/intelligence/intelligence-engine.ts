@@ -23,7 +23,6 @@ export class IntelligenceEngine {
         businessContext,
         customerContext,
         additionalInstructions: instructions,
-        complexity: 'high', // Use Gemini 2.0 Pro for deep intelligence
       });
 
       // 3. Parse and validate the comprehensive intelligence object
