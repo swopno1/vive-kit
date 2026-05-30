@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import Image from 'next/image';
 import { ShieldAlert, RotateCcw } from 'lucide-react';
 
 interface ErrorProps {
@@ -23,8 +24,11 @@ export default function GlobalErrorBoundary({ error, reset }: ErrorProps) {
         <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl" />
 
         <div className="relative flex flex-col items-center text-center">
-          <div className="p-4 bg-red-950/60 border border-red-500/25 rounded-full mb-6">
-            <ShieldAlert className="w-12 h-12 text-red-500" />
+          <div className="flex flex-col items-center gap-3 mb-6">
+            <Image src="/logo.png" alt="ViveKit" width={56} height={56} className="rounded-xl shadow-lg shadow-violet-600/20" />
+            <div className="p-3 bg-red-950/60 border border-red-500/25 rounded-full">
+              <ShieldAlert className="w-8 h-8 text-red-500" />
+            </div>
           </div>
 
           <h2 className="text-2xl font-bold tracking-tight mb-2">

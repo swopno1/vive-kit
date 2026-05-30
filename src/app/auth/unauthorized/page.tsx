@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { createClient } from '../../../lib/supabase/client';
 import { ShieldAlert, LogOut, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -22,8 +23,11 @@ export default function UnauthorizedPage() {
       <div className="relative z-10 w-full max-w-md space-y-8">
         
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-600 to-orange-600 shadow-lg shadow-rose-600/20 mb-2">
-            <ShieldAlert className="w-8 h-8 text-white" />
+          <div className="inline-flex flex-col items-center gap-3 mb-2">
+            <Image src="/logo.png" alt="ViveKit" width={64} height={64} className="rounded-2xl shadow-lg shadow-violet-600/20" />
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-600 to-orange-600 shadow-lg shadow-rose-600/20">
+              <ShieldAlert className="w-6 h-6 text-white" />
+            </div>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Access Denied</h1>
           <p className="text-sm text-slate-400">You do not have permission to view this page.</p>

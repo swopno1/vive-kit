@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ViveKit - Free AI Client Communication Toolkit",
     description: "A free AI-powered toolkit for freelancers, agencies, and consultants — transform raw client conversations into strategic replies.",
-    images: ["/og.png"],
+    images: ["/twitter-header.png"],
     creator: "@vivescript",
   }
 };

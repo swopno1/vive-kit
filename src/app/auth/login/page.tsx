@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { createClient } from '../../../lib/supabase/client';
-import { Shield, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -48,8 +49,15 @@ export default function LoginPage() {
         
         {/* Logo & Branding */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 shadow-lg shadow-violet-600/20 mb-2">
-            <Shield className="w-8 h-8 text-white" />
+          <div className="inline-flex items-center justify-center mb-2">
+            <Image
+              src="/logo.png"
+              alt="ViveKit"
+              width={72}
+              height={72}
+              className="rounded-2xl shadow-lg shadow-violet-600/20"
+              priority
+            />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-white">ViveKit</h1>
           <p className="text-sm text-slate-400">Free AI Client Communication Toolkit</p>

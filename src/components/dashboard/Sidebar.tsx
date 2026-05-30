@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  Sparkles, MessageSquare, Users, ShieldCheck, Settings,
+  MessageSquare, Users, ShieldCheck, Settings,
   Activity, Zap, Lock, Building2, LogOut, X, KeyRound,
 } from 'lucide-react';
 import { createClient } from '../../lib/supabase/client';
@@ -83,9 +84,13 @@ export function Sidebar({ onClose }: SidebarProps) {
         {/* Brand + mobile close */}
         <div className="flex items-center justify-between px-5 pt-5 pb-4 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-linear-to-tr from-violet-600 to-indigo-600 shadow-lg shadow-violet-500/20 ring-1 ring-violet-400/20">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="ViveKit"
+              width={36}
+              height={36}
+              className="rounded-xl shadow-lg shadow-violet-500/20 shrink-0"
+            />
             <div>
               <div className="font-bold text-sm text-white tracking-tight leading-none">ViveKit</div>
               <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mt-0.5">by ViveScript</div>

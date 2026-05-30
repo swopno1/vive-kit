@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Image from 'next/image';
 import { X, KeyRound } from 'lucide-react';
 import { ApiKeySettings } from './ApiKeySettings';
-import { getUserAIConfig, UserAIConfig } from '../../lib/user-ai-config';
+import { UserAIConfig } from '../../lib/user-ai-config';
 
 interface ApiKeyModalProps {
   open: boolean;
@@ -28,11 +29,12 @@ export function ApiKeyModal({ open, onClose, onConfigChange }: ApiKeyModalProps)
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-violet-600/15 ring-1 ring-violet-500/20">
-              <KeyRound className="w-4 h-4 text-violet-400" />
-            </div>
+            <Image src="/logo.png" alt="ViveKit" width={32} height={32} className="rounded-lg shrink-0" />
             <div>
-              <h2 className="text-sm font-semibold text-white">AI Provider Settings</h2>
+              <h2 className="text-sm font-semibold text-white flex items-center gap-1.5">
+                AI Provider Settings
+                <KeyRound className="w-3.5 h-3.5 text-violet-400" />
+              </h2>
               <p className="text-[10px] text-slate-500 mt-0.5">Use your own API key — ViveKit is free, forever.</p>
             </div>
           </div>
