@@ -3,7 +3,7 @@ import { GeminiProvider } from './gemini.provider';
 import { AnthropicProvider } from './providers/anthropic.provider';
 import { OpenAIProvider } from './providers/openai.provider';
 import { PromptBuilder } from './prompt-builder';
-import { ROUTING_RULES, AI_CONFIG } from './ai-config';
+import { ROUTING_RULES, AI_CONFIG, env } from './ai-config';
 import { AILogger } from './ai-logger';
 import { AnalysisSchema } from './prompts/schemas';
 import { retrievalEngine } from './memory/retrieval-engine';
@@ -26,21 +26,18 @@ export class AIService implements AIServiceLayer {
     return ROUTING_RULES.DEFAULT_MODEL;
   }
 
-  /** Returns the correct provider — user-supplied key beats env var, then lazy-loaded fallback. */
+  /** Returns the correct provider — user-supplied key beats validated env, then fallback. */
   private resolveProvider(userConfig?: UserProviderConfig): AIProvider {
     if (userConfig) return createProvider(userConfig);
 
-    // Lazy-load fallback provider at request time
+    // Lazy-load fallback provider at request time using validated env
     if (!this.cachedFallbackProvider) {
-      const anthropicKey = process.env.ANTHROPIC_API_KEY?.trim();
-      const openaiKey = process.env.OPENAI_API_KEY?.trim();
-
-      if (anthropicKey) {
+      if (env.ANTHROPIC_API_KEY) {
         console.log('[AIService] Using Anthropic provider');
-        this.cachedFallbackProvider = new AnthropicProvider(anthropicKey);
-      } else if (openaiKey) {
+        this.cachedFallbackProvider = new AnthropicProvider(env.ANTHROPIC_API_KEY);
+      } else if (env.OPENAI_API_KEY) {
         console.log('[AIService] Using OpenAI provider');
-        this.cachedFallbackProvider = new OpenAIProvider(openaiKey);
+        this.cachedFallbackProvider = new OpenAIProvider(env.OPENAI_API_KEY);
       } else {
         console.warn('[AIService] No Anthropic/OpenAI key, falling back to Gemini');
         this.cachedFallbackProvider = new GeminiProvider();
