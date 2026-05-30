@@ -8,7 +8,7 @@ export const chatRequestSchema = z.object({
   businessContext: z.any().optional(),
   customerContext: z.object({
     id: z.string().optional(),
-    email: z.string().email(),
+    email: z.string().email().optional().or(z.literal('')),
     firstName: z.string().optional(),
     lastName: z.string().optional(),
     companyName: z.string().optional(),

@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     const validation = chatRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response(JSON.stringify({ error: validation.error.format() }), {
+      return new Response(JSON.stringify({ error: validation.error.issues.map(i => i.message).join('; ') }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });

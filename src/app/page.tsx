@@ -96,7 +96,10 @@ export default function DashboardHome() {
         }),
       });
 
-      if (!response.ok) throw new Error('Analysis failed');
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || 'Analysis failed');
+      }
       const result = await response.json();
       setIntelligence(result.data);
       setMemories(result.memories || []);

@@ -37,7 +37,7 @@ export interface BusinessContext {
 
 export interface CustomerProfile {
   id?: string;
-  email: string;
+  email?: string;
   firstName?: string;
   lastName?: string;
   companyName?: string;

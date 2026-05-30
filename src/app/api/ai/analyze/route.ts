@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const validation = chatRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return NextResponse.json({ error: validation.error.format() }, { status: 400 });
+      return NextResponse.json({ error: validation.error.issues.map(i => i.message).join('; ') }, { status: 400 });
     }
 
     // Prompt injection scan
