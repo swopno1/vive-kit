@@ -11,22 +11,10 @@ import { contextAssembler } from './memory/context-assembler';
 import { createProvider, UserProviderConfig } from './providers/provider-factory';
 
 export class AIService implements AIServiceLayer {
-  private fallbackProvider: AIProvider;
+  private cachedFallbackProvider: AIProvider | null = null;
 
   constructor() {
-    const anthropicKey = process.env.ANTHROPIC_API_KEY?.trim();
-    const openaiKey = process.env.OPENAI_API_KEY?.trim();
-
-    if (anthropicKey) {
-      console.log('[AIService] Using Anthropic provider');
-      this.fallbackProvider = new AnthropicProvider(anthropicKey);
-    } else if (openaiKey) {
-      console.log('[AIService] Using OpenAI provider');
-      this.fallbackProvider = new OpenAIProvider(openaiKey);
-    } else {
-      console.warn('[AIService] No Anthropic or OpenAI key found, falling back to Gemini (will fail if billing blocked)');
-      this.fallbackProvider = new GeminiProvider();
-    }
+    // Initialize on first use, not at startup
   }
 
   /**
@@ -38,10 +26,27 @@ export class AIService implements AIServiceLayer {
     return ROUTING_RULES.DEFAULT_MODEL;
   }
 
-  /** Returns the correct provider — user-supplied key beats env var, then fallback. */
+  /** Returns the correct provider — user-supplied key beats env var, then lazy-loaded fallback. */
   private resolveProvider(userConfig?: UserProviderConfig): AIProvider {
     if (userConfig) return createProvider(userConfig);
-    return this.fallbackProvider;
+
+    // Lazy-load fallback provider at request time
+    if (!this.cachedFallbackProvider) {
+      const anthropicKey = process.env.ANTHROPIC_API_KEY?.trim();
+      const openaiKey = process.env.OPENAI_API_KEY?.trim();
+
+      if (anthropicKey) {
+        console.log('[AIService] Using Anthropic provider');
+        this.cachedFallbackProvider = new AnthropicProvider(anthropicKey);
+      } else if (openaiKey) {
+        console.log('[AIService] Using OpenAI provider');
+        this.cachedFallbackProvider = new OpenAIProvider(openaiKey);
+      } else {
+        console.warn('[AIService] No Anthropic/OpenAI key, falling back to Gemini');
+        this.cachedFallbackProvider = new GeminiProvider();
+      }
+    }
+    return this.cachedFallbackProvider;
   }
 
   /** Maps a routed model ID to a valid model for the active provider. */
