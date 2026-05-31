@@ -77,9 +77,11 @@ export async function POST(req: Request) {
     });
   } catch (error: any) {
     console.error('[API_ANALYZE_ERROR]', error);
-    return NextResponse.json({
-      error: error.message || 'Internal Server Error',
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
-    }, { status: 500 });
+    const rawMsg: string = error?.message || 'Internal Server Error';
+    const isBillingOrQuotaError = /dunning|projects\/\d+|billing|quota|payment/i.test(rawMsg);
+    const safeMsg = isBillingOrQuotaError
+      ? 'AI provider unavailable. Configure your own API key in Settings to continue.'
+      : rawMsg;
+    return NextResponse.json({ error: safeMsg }, { status: 500 });
   }
 }

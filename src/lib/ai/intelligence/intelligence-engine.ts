@@ -38,7 +38,13 @@ export class IntelligenceEngine {
       return intelligence;
     } catch (error) {
       console.error('Intelligence Engine Analysis Failed:', error);
-      throw new Error(`Failed to generate conversation intelligence: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const rawMsg = error instanceof Error ? error.message : 'Unknown error';
+      // Sanitize provider errors — never expose GCP project IDs or billing details to callers
+      const isBillingOrQuotaError = /dunning|projects\/\d+|billing|quota|payment/i.test(rawMsg);
+      const safeMsg = isBillingOrQuotaError
+        ? 'AI provider unavailable. Configure your own API key in Settings to continue.'
+        : rawMsg;
+      throw new Error(safeMsg);
     }
   }
 

@@ -60,7 +60,12 @@ export async function POST(req: Request) {
     });
   } catch (error: any) {
     console.error('[API_STREAM_ERROR]', error);
-    return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), {
+    const rawMsg: string = error?.message || 'Internal Server Error';
+    const isBillingOrQuotaError = /dunning|projects\/\d+|billing|quota|payment/i.test(rawMsg);
+    const safeMsg = isBillingOrQuotaError
+      ? 'AI provider unavailable. Configure your own API key in Settings to continue.'
+      : rawMsg;
+    return new Response(JSON.stringify({ error: safeMsg }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

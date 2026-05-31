@@ -11,10 +11,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import { Brain, MessageSquare, Menu } from 'lucide-react';
 import { BusinessIntelligenceEngine } from '../lib/ai/business-engine';
 import { createClient } from '../lib/supabase/client';
-import { getAIRequestHeaders } from '../lib/user-ai-config';
+import { getAIRequestHeaders, getUserAIConfig } from '../lib/user-ai-config';
+
+const PROVIDER_MODEL_LABEL: Record<string, string> = {
+  google: 'Gemini',
+  openai: 'OpenAI',
+  anthropic: 'Claude',
+};
+
+function useActiveProviderLabel() {
+  const [label, setLabel] = useState('Gemini 3.5 Flash');
+  useEffect(() => {
+    const cfg = getUserAIConfig();
+    if (cfg) {
+      const providerName = PROVIDER_MODEL_LABEL[cfg.provider] ?? cfg.provider;
+      const modelShort = cfg.model.split('-').slice(0, 4).join('-');
+      setLabel(`${providerName} · ${modelShort}`);
+    }
+  }, []);
+  return label;
+}
 
 export default function DashboardHome() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const activeProviderLabel = useActiveProviderLabel();
 
   // Business context is synchronous — initialize directly, no effect needed
   const _defaultContext = BusinessIntelligenceEngine.getFallbackContext();
@@ -43,11 +63,12 @@ export default function DashboardHome() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Intelligence states
+  // Intelligence states — separate error so analysis failures don't overwrite the Reply tab
   const [intelligence, setIntelligence] = useState<ConversationIntelligence | null>(null);
   const [memories, setMemories] = useState<RetrievalResult[]>([]);
   const [profile, setProfile] = useState<ClientIntelligenceProfile | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisError, setAnalysisError] = useState('');
 
   // CRM onboarding: resolve the authenticated user's customer profile ID
   useEffect(() => {
@@ -82,7 +103,7 @@ export default function DashboardHome() {
     if (!rawConversation.trim() || isAnalyzing) return;
 
     setIsAnalyzing(true);
-    setErrorMessage('');
+    setAnalysisError('');
 
     try {
       const response = await fetch('/api/ai/analyze', {
@@ -105,8 +126,13 @@ export default function DashboardHome() {
       setMemories(result.memories || []);
       setProfile(result.profile || null);
     } catch (err: any) {
-      console.error(err);
-      setErrorMessage('Failed to analyze conversation.');
+      const msg: string = err?.message || '';
+      console.warn('[ANALYSIS_ERROR]', msg || err);
+      setAnalysisError(
+        msg.includes('Configure your own API key')
+          ? msg
+          : 'Intelligence analysis unavailable. Configure your API key in Settings.'
+      );
     } finally {
       setIsAnalyzing(false);
     }
@@ -118,6 +144,7 @@ export default function DashboardHome() {
     setIsGenerating(true);
     setGeneratedReply('');
     setErrorMessage('');
+    setAnalysisError('');
 
     // Auto-trigger analysis in background
     handleTriggerAnalysis();
@@ -155,8 +182,13 @@ export default function DashboardHome() {
         }
       }
     } catch (err: any) {
-      console.error('[VIVEKIT_STREAM_ERROR]', err);
-      setErrorMessage(err.message || 'Failed to compose AI response.');
+      console.error('[VIVEKIT_STREAM_ERROR]', err?.message || err);
+      const msg: string = err?.message || '';
+      setErrorMessage(
+        msg.includes('Configure your own API key')
+          ? msg
+          : 'Failed to compose AI response. Check your API key in Settings.'
+      );
     } finally {
       setIsGenerating(false);
     }
@@ -217,7 +249,7 @@ export default function DashboardHome() {
           </div>
           <div className="flex items-center gap-1.5 text-[10px] text-slate-600 font-semibold uppercase tracking-widest">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="hidden sm:block">Gemini 3.5 Flash Active</span>
+            <span className="hidden sm:block">{activeProviderLabel} Active</span>
           </div>
         </header>
 
@@ -281,20 +313,27 @@ export default function DashboardHome() {
                 </TabsContent>
 
                 <TabsContent value="intelligence" className="h-full mt-0">
-                  {!intelligence && !isAnalyzing && (
-                    <div className="h-full flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl p-10 text-center">
-                      <Brain className="w-12 h-12 mb-4 opacity-20" />
-                      <h3 className="font-semibold text-slate-400">Intelligence Pending</h3>
-                      <p className="text-xs max-w-xs mt-2">Generate a reply to trigger deep conversation analysis and risk assessment.</p>
-                    </div>
-                  )}
                   {isAnalyzing && (
                     <div className="h-full flex flex-col items-center justify-center text-slate-500">
                       <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin mb-4" />
                       <p className="text-xs font-semibold animate-pulse text-violet-400">Extracting Business Intelligence...</p>
                     </div>
                   )}
-                  {intelligence && (
+                  {!isAnalyzing && analysisError && (
+                    <div className="h-full flex flex-col items-center justify-center border-2 border-dashed border-amber-500/20 bg-amber-500/5 rounded-3xl p-10 text-center">
+                      <Brain className="w-12 h-12 mb-4 text-amber-500/30" />
+                      <h3 className="font-semibold text-amber-400">Intelligence Unavailable</h3>
+                      <p className="text-xs max-w-xs mt-2 text-slate-500">{analysisError}</p>
+                    </div>
+                  )}
+                  {!isAnalyzing && !analysisError && !intelligence && (
+                    <div className="h-full flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl p-10 text-center">
+                      <Brain className="w-12 h-12 mb-4 opacity-20" />
+                      <h3 className="font-semibold text-slate-400">Intelligence Pending</h3>
+                      <p className="text-xs max-w-xs mt-2">Generate a reply to trigger deep conversation analysis and risk assessment.</p>
+                    </div>
+                  )}
+                  {!isAnalyzing && intelligence && (
                     <IntelligenceDashboard
                       intelligence={intelligence}
                       memories={memories}
