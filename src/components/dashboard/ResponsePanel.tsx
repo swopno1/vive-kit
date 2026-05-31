@@ -127,7 +127,7 @@ export function ResponsePanel({ generatedReply, isGenerating, onApprove }: Respo
               <button
                 key={mode}
                 onClick={() => setBusinessPriority(mode)}
-                className={`px-2 sm:px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider rounded transition-all min-h-8 ${
+                className={`px-2 sm:px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider rounded min-h-8 transition-[background-color,color,border-color,box-shadow,transform] duration-150 active:scale-95 ${
                   businessPriority === mode
                     ? 'bg-slate-900 text-white shadow-inner border-slate-800'
                     : 'text-slate-500 hover:text-slate-300'
@@ -184,15 +184,15 @@ export function ResponsePanel({ generatedReply, isGenerating, onApprove }: Respo
                     setSelectedStrategyId(strat.id);
                     setIsEditing(false);
                   }}
-                  className={`flex-1 py-2 text-center rounded-lg text-[10px] font-bold uppercase tracking-wider relative transition-all ${
-                    selectedStrategyId === strat.id 
-                      ? 'bg-slate-900 text-white shadow' 
+                  className={`flex-1 py-2 text-center rounded-lg text-[10px] font-bold uppercase tracking-wider relative transition-[background-color,color,box-shadow,transform] duration-150 active:scale-95 ${
+                    selectedStrategyId === strat.id
+                      ? 'bg-slate-900 text-white shadow'
                       : 'text-slate-500 hover:text-slate-350'
                   }`}
                 >
                   <span>{strat.name}</span>
                   {strat.recommended && (
-                    <span className="absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full bg-violet-600 border border-slate-950 flex items-center justify-center" title="AI Recommended Strategy">
+                    <span className="absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full bg-violet-600 border border-slate-950 flex items-center justify-center recommended-badge" title="AI Recommended Strategy">
                       <Award className="w-2 h-2 text-white" />
                     </span>
                   )}
@@ -268,10 +268,10 @@ export function ResponsePanel({ generatedReply, isGenerating, onApprove }: Respo
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsEditing(!isEditing)}
-                  className={`text-[10px] h-7 px-3 rounded-lg border ${
-                    isEditing 
-                      ? 'text-violet-400 border-violet-500/20 bg-violet-600/10 hover:bg-violet-600/15 font-bold' 
-                      : 'text-slate-400 border-slate-900 hover:text-white hover:bg-slate-800/60 font-bold'
+                  className={`text-[10px] h-7 px-3 rounded-lg border font-bold transition-[background-color,color,border-color,transform] duration-150 active:scale-95 ${
+                    isEditing
+                      ? 'text-violet-400 border-violet-500/20 bg-violet-600/10 hover:bg-violet-600/15'
+                      : 'text-slate-400 border-slate-900 hover:text-white hover:bg-slate-800/60'
                   }`}
                 >
                   {isEditing ? '✓ Lock Changes' : 'Quick Edit Strategy'}
@@ -313,10 +313,10 @@ export function ResponsePanel({ generatedReply, isGenerating, onApprove }: Respo
           size="lg"
           disabled={!activeContent || isGenerating}
           onClick={handleCopy}
-          className={`w-full py-5 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+          className={`w-full py-5 rounded-2xl font-bold flex items-center justify-center gap-2 cursor-pointer transition-[background-color,color,box-shadow,transform] duration-180 active:scale-[0.97] ${
             copied
-              ? 'bg-emerald-600 text-white shadow-emerald-500/20 shadow-md'
-              : 'bg-slate-100 text-slate-950 hover:bg-white hover:shadow-white/10 hover:shadow-lg'
+              ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/30'
+              : 'bg-slate-100 text-slate-950 hover:bg-white hover:shadow-lg hover:shadow-white/10'
           }`}
         >
           {copied ? (

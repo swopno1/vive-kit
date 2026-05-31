@@ -69,7 +69,7 @@ export function ConversationInput({
               size="sm"
               onClick={handleClear}
               disabled={isGenerating || (!rawConversation && !additionalInstructions && !customerContext.email)}
-              className="text-slate-400 border-slate-800 hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/20 text-xs"
+              className="text-slate-400 border-slate-800 text-xs transition-[color,background-color,border-color,transform] duration-150 active:scale-95 hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/20"
             >
               <Trash2 className="w-3.5 h-3.5 mr-1" />
               Reset Inputs
@@ -139,7 +139,7 @@ Agent: Let me check..."
           onClick={() => setShowCRM(!showCRM)}
           aria-expanded={showCRM}
           aria-label="Customer Relationship Context (CRM)"
-          className="w-full text-left flex justify-between items-center p-6 border-b border-transparent"
+          className="w-full text-left flex justify-between items-center p-6 border-b border-transparent transition-[background-color,border-color,transform] duration-150 active:scale-95 hover:bg-slate-800/20"
         >
           <div className="flex items-center gap-2.5">
             <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400">

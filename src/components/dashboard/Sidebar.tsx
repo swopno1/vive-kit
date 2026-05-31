@@ -100,7 +100,7 @@ export function Sidebar({ onClose }: SidebarProps) {
           {onClose && (
             <button
               onClick={onClose}
-              className="md:hidden p-1.5 rounded-lg text-slate-500 hover:text-white hover:bg-slate-800 transition-colors"
+              className="md:hidden p-1.5 rounded-lg text-slate-500 transition-[color,background-color,transform] duration-100 active:scale-95 hover:text-white hover:bg-slate-800"
               aria-label="Close menu"
             >
               <X className="w-4 h-4" />
@@ -128,7 +128,7 @@ export function Sidebar({ onClose }: SidebarProps) {
                       onClick={handleNavClick}
                       className={`
                         group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
-                        transition-all duration-200 min-h-[44px]
+                        min-h-[44px] transition-[background-color,color,transform] duration-150 active:scale-95
                         ${isActive
                           ? 'bg-violet-600/15 text-white'
                           : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
@@ -136,7 +136,7 @@ export function Sidebar({ onClose }: SidebarProps) {
                       `}
                     >
                       {isActive && (
-                        <span className="absolute left-0 top-2.5 bottom-2.5 w-0.5 rounded-r-full bg-linear-to-b from-violet-500 to-indigo-500" />
+                        <span className="absolute left-0 top-2.5 bottom-2.5 w-0.5 rounded-r-full bg-linear-to-b from-violet-500 to-indigo-500 transition-opacity duration-150" />
                       )}
                       <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-violet-400' : 'text-slate-500 group-hover:text-slate-300'}`} />
                       <span className="truncate">{label}</span>
@@ -154,7 +154,7 @@ export function Sidebar({ onClose }: SidebarProps) {
           {/* AI provider status — clickable to open settings */}
           <button
             onClick={() => setSettingsOpen(true)}
-            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl bg-emerald-500/5 border border-emerald-500/10 hover:border-violet-500/30 hover:bg-violet-500/5 transition-colors group"
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl bg-emerald-500/5 border border-emerald-500/10 transition-[background-color,border-color,transform] duration-150 active:scale-95 hover:border-violet-500/30 hover:bg-violet-500/5 group"
             title="Configure AI provider"
           >
             <span className="relative flex h-2 w-2 shrink-0">
@@ -169,7 +169,7 @@ export function Sidebar({ onClose }: SidebarProps) {
 
           {/* User */}
           {user && (
-            <div className="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-slate-800/40 transition-colors group">
+            <div className="flex items-center gap-3 px-2 py-2 rounded-xl transition-[background-color,transform] duration-150 active:scale-95 hover:bg-slate-800/40 group">
               {user.avatar ? (
                 <img src={user.avatar} alt="" className="w-8 h-8 rounded-full ring-2 ring-slate-700 shrink-0" />
               ) : (
@@ -184,7 +184,7 @@ export function Sidebar({ onClose }: SidebarProps) {
               <button
                 onClick={handleSignOut}
                 title="Sign out"
-                className="p-1.5 rounded-lg text-slate-600 group-hover:text-slate-400 hover:!text-rose-400 hover:bg-slate-800 transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg text-slate-600 transition-[color,background-color,transform] duration-150 active:scale-95 group-hover:text-slate-400 hover:!text-rose-400 hover:bg-slate-800 cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
               </button>
