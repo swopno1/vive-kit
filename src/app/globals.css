@@ -182,6 +182,19 @@
     background: theme(colors.slate.600);
   }
 
+  /* Gate hover animations to fine-pointer devices only (fix touch device UX) */
+  @media (hover: none) and (pointer: coarse) {
+    .group:hover .group-hover\:scale-110 {
+      transform: none !important;
+    }
+    .group:hover .group-hover\:opacity-40 {
+      opacity: 0.25 !important;
+    }
+    .hover\:scale-110:hover {
+      transform: none !important;
+    }
+  }
+
   /* Animated gradient text */
   .gradient-text {
     @apply bg-linear-to-r from-violet-400 via-indigo-400 to-violet-400 bg-clip-text text-transparent;

@@ -116,11 +116,11 @@ input[type="reset"]:hover {
 }
 
 .spinner {
-  animation: spin 2s linear infinite;
+  animation: spin 1.5s linear infinite;
 }
 
 .spinner--with-pulse {
-  animation: spin 2s linear infinite, pulse-brightness 0.4s ease-in-out infinite;
+  animation: spin 1.5s linear infinite, pulse-brightness 0.4s ease-in-out infinite;
 }
 
 /* Loading overlay with blur transition */
@@ -182,6 +182,37 @@ input[type="reset"]:hover {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Custom bounce for loading indicators - faster than Tailwind default */
+@keyframes bounce-load {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-bounce-load {
+  animation: bounce-load 0.6s ease-in-out infinite;
+}
+
+/* Copy button success morph - scale up then settle */
+@keyframes copy-success-morph {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+[data-state="success"] {
+  animation: copy-success-morph 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -395,6 +426,22 @@ input[type="reset"]:hover {
 button:focus-visible,
 [role="button"]:focus-visible {
   /* No animation delay on focus - keyboard users need immediacy */
+}
+
+/* Gate hover animations to fine-pointer devices only */
+/* On touch devices, :hover is triggered on tap, which breaks UX */
+@media (hover: none) and (pointer: coarse) {
+  /* Disable all hover-based transforms on touch devices */
+  button:hover,
+  [role="button"]:hover,
+  a:hover {
+    transform: none !important;
+  }
+
+  /* Disable group-hover effects */
+  .group:hover .group-hover\:scale-110 {
+    transform: none !important;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════

@@ -98,7 +98,7 @@ export function Button({
       className={cn(
         // Base styles - transition defined in animations.css
         'inline-flex items-center justify-center gap-2',
-        'font-medium transition-all duration-100 ease-out',
+        'font-medium transition-[transform,box-shadow] duration-100 ease-out',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         // Variant and size
@@ -164,7 +164,7 @@ export function IconButton({
     <button
       className={cn(
         'flex items-center justify-center rounded-lg',
-        'transition-all duration-100 ease-out',
+        'transition-[background-color,box-shadow] duration-100 ease-out',
         'hover:bg-gray-100',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600',
         'disabled:opacity-50 disabled:cursor-not-allowed',

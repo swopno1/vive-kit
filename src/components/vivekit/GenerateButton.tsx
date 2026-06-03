@@ -14,14 +14,14 @@ export function GenerateButton({ onClick, disabled, isLoading }: GenerateButtonP
       
       {/* Glow highlight behind the button */}
       {!disabled && !isLoading && (
-        <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 rounded-2xl blur-md opacity-25 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 rounded-2xl blur-md opacity-25 group-hover:opacity-40 transition-opacity duration-200 pointer-events-none" />
       )}
 
       <Button
         type="button"
         disabled={disabled || isLoading}
         onClick={onClick}
-        className="w-full relative bg-slate-100 text-slate-950 font-bold hover:bg-white hover:text-black py-6 rounded-xl border border-white/20 flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed select-none"
+        className="w-full relative bg-slate-100 text-slate-950 font-bold hover:bg-white hover:text-black py-6 rounded-xl border border-white/20 flex items-center justify-center gap-2 cursor-pointer transition-[background-color,color] duration-200 ease-out disabled:opacity-40 disabled:cursor-not-allowed select-none"
       >
         {isLoading ? (
           <>
@@ -30,7 +30,7 @@ export function GenerateButton({ onClick, disabled, isLoading }: GenerateButtonP
           </>
         ) : (
           <>
-            <Sparkles className="w-4 h-4 text-violet-600 fill-violet-600 group-hover:scale-110 transition-transform" />
+            <Sparkles className="w-4 h-4 text-violet-600 fill-violet-600 group-hover:scale-110 transition-transform duration-200 ease-out [&]:hover:scale-110" style={{transitionProperty: 'transform'}} />
             <span className="tracking-wide text-sm font-bold">Generate Smart Reply</span>
           </>
         )}

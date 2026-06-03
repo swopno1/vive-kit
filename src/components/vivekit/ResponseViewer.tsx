@@ -107,10 +107,11 @@ export function ResponseViewer({
                 type="button"
                 variant="ghost"
                 onClick={() => setIsEditing(!isEditing)}
-                className={`text-[10px] h-6 px-2.5 rounded border transition-colors cursor-pointer ${
-                  isEditing 
-                    ? 'text-violet-400 border-violet-500/20 bg-violet-600/10' 
-                    : 'text-slate-500 border-slate-800 hover:text-slate-300'
+                data-state={isEditing ? 'editing' : 'viewing'}
+                className={`text-[10px] h-6 px-2.5 rounded border transition-[color,background-color,border-color] duration-150 ease-out cursor-pointer ${
+                  isEditing
+                    ? 'text-violet-400 border-violet-500/20 bg-violet-600/10'
+                    : 'text-slate-500 border-slate-800 hover:text-slate-300 hover:bg-slate-800/30'
                 }`}
               >
                 {isEditing ? (
@@ -160,9 +161,9 @@ export function ResponseViewer({
             onClick={onRegenerate}
             disabled={isGenerating || !hasInput}
             variant="outline"
-            className="border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900/60 cursor-pointer rounded-xl h-11 px-4 flex items-center gap-1.5"
+            className="border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900/60 cursor-pointer rounded-xl h-11 px-4 flex items-center gap-1.5 transition-[color,background-color] duration-150 ease-out"
           >
-            <RotateCw className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
+            <RotateCw className={`w-3.5 h-3.5 transition-transform duration-150 ease-out ${isGenerating ? 'animate-spin' : 'rotate-0'}`} />
             <span className="text-xs font-bold">Regenerate</span>
           </Button>
 
@@ -170,9 +171,10 @@ export function ResponseViewer({
             type="button"
             onClick={handleCopy}
             disabled={isGenerating}
-            className={`flex-1 rounded-xl h-11 font-bold flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 ${
+            data-state={copied ? 'success' : 'idle'}
+            className={`flex-1 rounded-xl h-11 font-bold flex items-center justify-center gap-2 cursor-pointer transition-[background-color,color,box-shadow] duration-200 ease-out transform ${
               copied
-                ? 'bg-emerald-600 hover:bg-emerald-600 text-white shadow-emerald-500/25 shadow-md border-0'
+                ? 'bg-emerald-600 hover:bg-emerald-600 text-white shadow-emerald-500/25 shadow-md border-0 scale-100'
                 : 'bg-slate-100 text-slate-950 hover:bg-white'
             }`}
           >

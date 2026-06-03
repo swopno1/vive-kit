@@ -21,9 +21,9 @@ export function LoadingState() {
 
       {/* Pulsing dots indicator */}
       <div className="flex items-center gap-1.5 pt-2">
-        <span className="w-2 h-2 rounded-full bg-violet-500 animate-bounce [animation-delay:-0.3s]" />
-        <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce [animation-delay:-0.15s]" />
-        <span className="w-2 h-2 rounded-full bg-violet-400 animate-bounce" />
+        <span className="w-2 h-2 rounded-full bg-violet-500 animate-bounce-load" style={{animationDelay: '0s'}} />
+        <span className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce-load" style={{animationDelay: '0.15s'}} />
+        <span className="w-2 h-2 rounded-full bg-violet-400 animate-bounce-load" style={{animationDelay: '0.3s'}} />
       </div>
 
     </div>
