@@ -11,7 +11,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Button from './button';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface ResponseGeneratorProps {
   /**
@@ -201,14 +202,6 @@ export function ResponseGenerator({
       )}
     </div>
   );
-}
-
-/**
- * Helper function for className concatenation
- * (Replace with your actual cn utility)
- */
-function cn(...classes: (string | undefined | boolean)[]): string {
-  return classes.filter(Boolean).join(' ');
 }
 
 export default ResponseGenerator;
