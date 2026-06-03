@@ -6,7 +6,9 @@
  * - UI animations stay under 300ms
  * - Only animate transform and opacity
  * - Stagger creates visual rhythm (30-80ms between elements)
- * - Reduce motion is respected
+ * - Reduce motion is respected at root level
+ *
+ * Import in your main layout.tsx with: import '@/styles/animations.css'
  */
 
 :root {
@@ -27,7 +29,7 @@
   --stagger-md: 80ms;
 }
 
-/* Respect motion preferences */
+/* Respect motion preferences - disable ALL animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0ms;
@@ -48,33 +50,61 @@
   }
 }
 
-/* Button press feedback - applies to all buttons */
+/* ═══════════════════════════════════════════════════════════════
+   BUTTON INTERACTIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Apply to all pressable elements */
 button,
 [role="button"],
-a[class*="button"] {
+a[class*="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
   transition: transform var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-base) var(--ease-out);
 }
 
+/* Press feedback - scale down when clicked */
 button:active,
 [role="button"]:active,
-a[class*="button"]:active {
+a[class*="button"]:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active {
   transform: scale(0.97);
 }
 
+/* Hover state - elevate with shadow */
 button:hover,
 [role="button"]:hover,
-a[class*="button"]:hover {
+a[class*="button"]:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Spinner - perceived performance boost with subtle pulse */
+/* No hover on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  button:hover,
+  [role="button"]:hover {
+    box-shadow: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SPINNER & LOADING STATES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Base spinner rotation */
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
+/* Subtle brightness pulse for perceived performance */
 @keyframes pulse-brightness {
   0%,
   100% {
@@ -93,19 +123,22 @@ a[class*="button"]:hover {
   animation: spin 2s linear infinite, pulse-brightness 0.4s ease-in-out infinite;
 }
 
-/* Character reveal animation for text */
-@keyframes reveal-char {
-  0% {
-    opacity: 0;
-    transform: translateY(-2px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Loading overlay with blur transition */
+.loading-overlay {
+  backdrop-filter: blur(2px);
+  opacity: 0.5;
+  transition: opacity var(--duration-base) var(--ease-out);
 }
 
-/* Fade in from opacity */
+.loading-overlay[data-exiting] {
+  opacity: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ENTRANCE ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Fade in from fully transparent */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -115,7 +148,7 @@ a[class*="button"]:hover {
   }
 }
 
-/* Scale + fade entry (used for modals, cards) */
+/* Scale + fade (cards, modals) */
 @keyframes scale-fade-in {
   from {
     opacity: 0;
@@ -127,7 +160,7 @@ a[class*="button"]:hover {
   }
 }
 
-/* Slide up entry */
+/* Slide up from below */
 @keyframes slide-up {
   from {
     opacity: 0;
@@ -139,72 +172,97 @@ a[class*="button"]:hover {
   }
 }
 
-/* Clip-path horizontal reveal (left to right) */
-.reveal-ltr {
-  animation: none;
+/* Slide down from above */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CLIP-PATH REVEALS (No layout shift)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Horizontal reveal: left to right */
+@keyframes reveal-clip-ltr {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 .reveal-ltr[data-entering] {
-  clip-path: inset(0 100% 0 0);
   animation: reveal-clip-ltr var(--duration-base) var(--ease-out) forwards;
 }
 
-@keyframes reveal-clip-ltr {
+/* Horizontal reveal: right to left */
+@keyframes reveal-clip-rtl {
+  from {
+    clip-path: inset(0 0 0 100%);
+  }
   to {
     clip-path: inset(0 0 0 0);
   }
 }
 
-/* Clip-path vertical reveal (bottom to top) */
-.reveal-btm {
-  animation: none;
+.reveal-rtl[data-entering] {
+  animation: reveal-clip-rtl var(--duration-base) var(--ease-out) forwards;
+}
+
+/* Vertical reveal: bottom to top (most common) */
+@keyframes reveal-clip-btm {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 .reveal-btm[data-entering] {
-  clip-path: inset(0 0 100% 0);
   animation: reveal-clip-btm var(--duration-base) var(--ease-out) forwards;
 }
 
-@keyframes reveal-clip-btm {
+/* Vertical reveal: top to bottom */
+@keyframes reveal-clip-top {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
   to {
     clip-path: inset(0 0 0 0);
   }
 }
 
-/* Stagger animation helper */
-@for $i from 1 through 10 {
-  .stagger-\[#{$i}\] {
-    animation-delay: calc(var(--stagger-sm) * #{$i - 1});
+.reveal-top[data-entering] {
+  animation: reveal-clip-top var(--duration-base) var(--ease-out) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ERROR & SUCCESS STATES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Error banner reveal */
+@keyframes reveal-banner {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
   }
 }
 
-/* CSS-in-JS helper: @starting-style fallback */
-/* Use [data-mounted="true"] for legacy browsers */
-[data-mounted="false"] {
-  opacity: 0;
-  transform: translateY(8px);
-}
-
-[data-mounted="true"] {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity var(--duration-base) var(--ease-out),
-    transform var(--duration-base) var(--ease-out);
-}
-
-/* Validation banner animation */
 .validation-banner {
-  clip-path: inset(0 0 100% 0);
   animation: reveal-banner var(--duration-base) var(--ease-out) forwards;
 }
 
-@keyframes reveal-banner {
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-/* Success feedback - checkmark morph */
+/* Success checkmark morph */
 @keyframes success-fade {
   0% {
     opacity: 0;
@@ -223,18 +281,11 @@ a[class*="button"]:hover {
   animation: success-fade var(--duration-base) var(--ease-out);
 }
 
-/* Loading overlay with blur */
-.loading-overlay {
-  backdrop-filter: blur(2px);
-  opacity: 0.5;
-  transition: opacity var(--duration-base) var(--ease-out);
-}
+/* ═══════════════════════════════════════════════════════════════
+   COUNTER ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
 
-.loading-overlay[data-exiting] {
-  opacity: 0;
-}
-
-/* Counter animation for numbers */
+/* Pulse effect when counter updates */
 @keyframes counter-pulse {
   0% {
     filter: brightness(0.9);
@@ -251,7 +302,11 @@ a[class*="button"]:hover {
   animation: counter-pulse var(--duration-slow) var(--ease-out);
 }
 
-/* Hover lift effect (popover-like) */
+/* ═══════════════════════════════════════════════════════════════
+   HOVER EFFECTS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Lift on hover (cards, popovers) */
 .lift-on-hover {
   transition: transform var(--duration-base) var(--ease-out),
     box-shadow var(--duration-base) var(--ease-out);
@@ -262,7 +317,19 @@ a[class*="button"]:hover {
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Tooltip rapid appear (skip animation on subsequent) */
+/* No lift on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .lift-on-hover:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOOLTIP BEHAVIOR
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Tooltip scales in from trigger point */
 .tooltip {
   transition: opacity var(--duration-fast) var(--ease-out),
     transform var(--duration-fast) var(--ease-out);
@@ -274,20 +341,79 @@ a[class*="button"]:hover {
   transform: scale(0.97);
 }
 
+/* Skip animation on subsequent tooltips (instant appear) */
 .tooltip[data-instant] {
   transition-duration: 0ms;
 }
 
-/* Accessibility: focus indicators */
+/* ═══════════════════════════════════════════════════════════════
+   STAGGER HELPERS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Use these classes for rapid staggering:
+   <div style={{ animationDelay: 'calc(var(--stagger-sm) * 0)' }}>Item 1</div>
+   <div style={{ animationDelay: 'calc(var(--stagger-sm) * 1)' }}>Item 2</div>
+   etc.
+*/
+
+.stagger-0 {
+  animation-delay: calc(var(--stagger-sm) * 0);
+}
+
+.stagger-1 {
+  animation-delay: calc(var(--stagger-sm) * 1);
+}
+
+.stagger-2 {
+  animation-delay: calc(var(--stagger-sm) * 2);
+}
+
+.stagger-3 {
+  animation-delay: calc(var(--stagger-sm) * 3);
+}
+
+.stagger-4 {
+  animation-delay: calc(var(--stagger-sm) * 4);
+}
+
+.stagger-5 {
+  animation-delay: calc(var(--stagger-sm) * 5);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Clear focus indicators for keyboard navigation */
 *:focus-visible {
   outline: 2px solid var(--color-focus, #3b82f6);
   outline-offset: 2px;
 }
 
-/* Touch device: no hover animations */
-@media (hover: none) and (pointer: coarse) {
-  .lift-on-hover:hover {
-    transform: none;
-    box-shadow: none;
-  }
+/* Skip animation on keyboard-initiated actions */
+/* These are triggered 100+ times per day; animation feels slow */
+button:focus-visible,
+[role="button"]:focus-visible {
+  /* No animation delay on focus - keyboard users need immediacy */
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   @STARTING-STYLE POLYFILL
+   ═══════════════════════════════════════════════════════════════ */
+
+/* For browsers that don't support @starting-style, use data-mounted attribute:
+   <div data-mounted="false">Initial state</div>
+   <div data-mounted="true">Animated in</div>
+*/
+
+[data-mounted="false"] {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+[data-mounted="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
 }
