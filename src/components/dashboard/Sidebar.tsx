@@ -32,7 +32,7 @@ const NAV = [
     group: 'Analytics',
     items: [
       { href: '/admin/usage', label: 'Usage Log', icon: Activity },
-      { href: '/admin/performance', label: 'AI Costs', icon: Zap },
+      { href: '/admin/costs', label: 'AI Costs', icon: Zap },
       { href: '/admin/data', label: 'My Data', icon: Lock },
     ],
   },
