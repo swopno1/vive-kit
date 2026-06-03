@@ -2,6 +2,7 @@ import { intelligenceOrchestrator } from "./modules/intelligence-orchestrator";
 import { riskEngine } from "./modules/risk-engine";
 import { negotiationAnalyzer } from "./modules/negotiation-analyzer";
 import { entityExtractor } from "./modules/entity-extractor";
+import { leadExtractor } from "./modules/lead-extractor";
 import { PromptModule, PromptRegistry, AIRequestConfig } from '../types';
 import { baseIdentity } from './modules/base-identity';
 import { businessContext } from './modules/business-context';
@@ -26,6 +27,7 @@ export class PromptManager {
     'risk-engine': riskEngine,
     'negotiation-analyzer': negotiationAnalyzer,
     'entity-extractor': entityExtractor,
+    'lead-extractor': leadExtractor,
   };
 
   /**

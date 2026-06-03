@@ -129,6 +129,42 @@ export const EntityExtractionSchema = z.object({
   paymentTerms: z.array(z.string()),
 });
 
+// --- Lead Data Extraction ---
+
+export const LeadDataExtractionSchema = z.object({
+  firstName: z.object({
+    value: z.string().optional(),
+    confidence: z.number().min(0).max(1),
+    source: z.string().optional(),
+  }),
+  lastName: z.object({
+    value: z.string().optional(),
+    confidence: z.number().min(0).max(1),
+    source: z.string().optional(),
+  }),
+  email: z.object({
+    value: z.string().optional(),
+    confidence: z.number().min(0).max(1),
+    source: z.string().optional(),
+  }),
+  phone: z.object({
+    value: z.string().optional(),
+    confidence: z.number().min(0).max(1),
+    source: z.string().optional(),
+  }),
+  company: z.object({
+    value: z.string().optional(),
+    confidence: z.number().min(0).max(1),
+    source: z.string().optional(),
+  }),
+  serviceInterest: z.object({
+    values: z.array(z.string()),
+    confidence: z.number().min(0).max(1),
+    source: z.string().optional(),
+  }),
+  overallConfidence: z.number().min(0).max(1),
+});
+
 // --- Memory Preparation ---
 
 export const MemoryPreparationSchema = z.object({
@@ -155,7 +191,9 @@ export const ConversationIntelligenceSchema = z.object({
   negotiationSignals: NegotiationSignalsSchema,
   summary: ConversationSummarySchema,
   entities: EntityExtractionSchema,
+  leadData: LeadDataExtractionSchema,
   memoryPreparation: MemoryPreparationSchema,
 });
 
 export type ConversationIntelligence = z.infer<typeof ConversationIntelligenceSchema>;
+export type LeadDataExtraction = z.infer<typeof LeadDataExtractionSchema>;
