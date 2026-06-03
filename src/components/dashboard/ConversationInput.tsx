@@ -65,11 +65,11 @@ export function ConversationInput({
               </CardDescription>
             </div>
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={handleClear}
               disabled={isGenerating || (!rawConversation && !additionalInstructions && !customerContext.email)}
-              className="text-slate-400 border-slate-800 text-xs transition-[color,background-color,border-color,transform] duration-150 active:scale-95 hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/20"
+              className="text-slate-400 text-xs transition-[color,background-color,transform] duration-150 active:scale-95 hover:text-rose-400 hover:bg-rose-500/10"
             >
               <Trash2 className="w-3.5 h-3.5 mr-1" />
               Reset Inputs

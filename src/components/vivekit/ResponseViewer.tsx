@@ -160,8 +160,8 @@ export function ResponseViewer({
             type="button"
             onClick={onRegenerate}
             disabled={isGenerating || !hasInput}
-            variant="outline"
-            className="border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900/60 cursor-pointer rounded-xl h-11 px-4 flex items-center gap-1.5 transition-[color,background-color] duration-150 ease-out"
+            variant="ghost"
+            className="text-slate-400 hover:text-white hover:bg-slate-900/60 cursor-pointer rounded-xl h-11 px-4 flex items-center gap-1.5 transition-[color,background-color] duration-150 ease-out"
           >
             <RotateCw className={`w-3.5 h-3.5 transition-transform duration-150 ease-out ${isGenerating ? 'animate-spin' : 'rotate-0'}`} />
             <span className="text-xs font-bold">Regenerate</span>

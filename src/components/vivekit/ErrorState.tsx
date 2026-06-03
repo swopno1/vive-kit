@@ -26,9 +26,9 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
       {/* Action Button */}
       <Button
         onClick={onRetry}
-        variant="outline"
+        variant="ghost"
         size="sm"
-        className="text-xs text-slate-300 border-slate-800 hover:text-white hover:bg-slate-900 cursor-pointer flex items-center gap-1.5 rounded-lg"
+        className="text-xs text-slate-300 hover:text-white hover:bg-slate-900 cursor-pointer flex items-center gap-1.5 rounded-lg"
       >
         <RefreshCw className="w-3.5 h-3.5" />
         <span>Try Again</span>
