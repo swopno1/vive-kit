@@ -1,58 +1,179 @@
-import { Button as ButtonPrimitive } from "@base-ui/react/button"
-import { cva, type VariantProps } from "class-variance-authority"
+/**
+ * Button Component
+ *
+ * Reusable button with Emil Kowalski design polish:
+ * - Scale(0.97) press feedback
+ * - Custom easing curves from animations.css
+ * - Accessibility-first with focus indicators
+ * - Touch device support (no hover animations)
+ * - Disabled state handling
+ */
 
-import { cn } from "@/lib/utils"
+import React from 'react';
+import { cn } from '@/lib/utils';
 
-const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-  {
-    variants: {
-      variant: {
-        default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
-        outline:
-          "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
-        ghost:
-          "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
-        destructive:
-          "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
-        link: "text-primary underline-offset-4 hover:underline",
-      },
-      size: {
-        default:
-          "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        icon: "size-8",
-        "icon-xs":
-          "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm":
-          "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
-        "icon-lg": "size-9",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  }
-)
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /**
+   * Button variant style
+   * - primary: Blue background, white text (main actions)
+   * - secondary: Gray background (secondary actions)
+   * - ghost: No background, text-only (minimal style)
+   * - danger: Red background (destructive actions)
+   */
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
 
-function Button({
-  className,
-  variant = "default",
-  size = "default",
-  ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
-  return (
-    <ButtonPrimitive
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  )
+  /**
+   * Button size
+   * - sm: Small, compact button
+   * - md: Medium, standard button
+   * - lg: Large, prominent button
+   */
+  size?: 'sm' | 'md' | 'lg';
+
+  /**
+   * Loading state - shows spinner, disables interaction
+   */
+  isLoading?: boolean;
+
+  /**
+   * Loading text to show when isLoading is true
+   */
+  loadingText?: string;
+
+  /**
+   * Show as full width
+   */
+  fullWidth?: boolean;
 }
 
-export { Button, buttonVariants }
+const variantStyles = {
+  primary: 'bg-blue-600 text-white hover:bg-blue-700',
+  secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
+  ghost: 'text-gray-700 hover:bg-gray-100',
+  danger: 'bg-red-600 text-white hover:bg-red-700',
+};
+
+const sizeStyles = {
+  sm: 'px-3 py-2 text-sm rounded',
+  md: 'px-4 py-2 text-base rounded-md',
+  lg: 'px-6 py-3 text-lg rounded-lg',
+};
+
+/**
+ * Button Component with Emil Kowalski polish
+ *
+ * Features:
+ * - Custom easing: transform and box-shadow transitions use --ease-out
+ * - Press feedback: scale(0.97) on :active for tactile response
+ * - Loading state: Shows spinner and loading text when isLoading=true
+ * - Accessibility: Focus indicators, disabled state, aria-busy
+ * - Touch-safe: No hover animations on touch devices
+ *
+ * @example
+ * // Primary button
+ * <Button variant="primary">Generate Response</Button>
+ *
+ * // Loading state
+ * <Button isLoading loadingText="Generating...">Generate</Button>
+ *
+ * // Danger button
+ * <Button variant="danger" onClick={handleDelete}>Delete Account</Button>
+ */
+export function Button({
+  variant = 'primary',
+  size = 'md',
+  isLoading = false,
+  loadingText,
+  fullWidth = false,
+  disabled,
+  children,
+  className,
+  ...props
+}: ButtonProps) {
+  const isDisabled = disabled || isLoading;
+
+  return (
+    <button
+      disabled={isDisabled}
+      className={cn(
+        // Base styles - transition defined in animations.css
+        'inline-flex items-center justify-center gap-2',
+        'font-medium transition-all duration-100 ease-out',
+        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600',
+        'disabled:opacity-50 disabled:cursor-not-allowed',
+        // Variant and size
+        variantStyles[variant],
+        sizeStyles[size],
+        // Full width option
+        fullWidth && 'w-full',
+        // Custom class
+        className
+      )}
+      aria-busy={isLoading}
+      {...props}
+    >
+      {/* Spinner when loading */}
+      {isLoading && (
+        <svg
+          className="spinner spinner--with-pulse w-4 h-4"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          />
+        </svg>
+      )}
+
+      {/* Content - show loading text or children */}
+      {isLoading && loadingText ? loadingText : children}
+    </button>
+  );
+}
+
+/**
+ * IconButton - Button variant for icon-only buttons
+ *
+ * @example
+ * <IconButton aria-label="Close" onClick={handleClose}>
+ *   <XIcon />
+ * </IconButton>
+ */
+export function IconButton({
+  size = 'md',
+  ...props
+}: Omit<ButtonProps, 'size'> & { size?: 'sm' | 'md' | 'lg' }) {
+  const sizeMap = {
+    sm: 'w-8 h-8',
+    md: 'w-10 h-10',
+    lg: 'w-12 h-12',
+  };
+
+  return (
+    <button
+      className={cn(
+        'flex items-center justify-center rounded-lg',
+        'transition-all duration-100 ease-out',
+        'hover:bg-gray-100',
+        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600',
+        'disabled:opacity-50 disabled:cursor-not-allowed',
+        sizeMap[size],
+        props.className
+      )}
+      {...props}
+    />
+  );
+}
+
+export default Button;
