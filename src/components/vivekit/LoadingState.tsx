@@ -11,12 +11,12 @@ export function LoadingState() {
         <span>ViveKit AI is drafting client reply...</span>
       </div>
 
-      {/* Modern Shimmering Skeletal Blocks */}
-      <div className="w-full space-y-2.5 animate-pulse">
-        <div className="h-4 bg-slate-700 rounded-lg w-5/6" />
-        <div className="h-4 bg-slate-700 rounded-lg w-full" />
-        <div className="h-4 bg-slate-700 rounded-lg w-3/4" />
-        <div className="h-4 bg-slate-700 rounded-lg w-4/5" />
+      {/* Modern Shimmering Skeletal Blocks with stagger */}
+      <div className="w-full space-y-2.5">
+        <div className="h-4 bg-slate-700 rounded-lg w-5/6 skeleton-shimmer" style={{animationDelay: '0s'}} />
+        <div className="h-4 bg-slate-700 rounded-lg w-full skeleton-shimmer" style={{animationDelay: '0.1s'}} />
+        <div className="h-4 bg-slate-700 rounded-lg w-3/4 skeleton-shimmer" style={{animationDelay: '0.2s'}} />
+        <div className="h-4 bg-slate-700 rounded-lg w-4/5 skeleton-shimmer" style={{animationDelay: '0.3s'}} />
       </div>
 
       {/* Pulsing dots indicator */}

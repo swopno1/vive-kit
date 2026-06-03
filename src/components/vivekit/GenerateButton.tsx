@@ -12,9 +12,9 @@ export function GenerateButton({ onClick, disabled, isLoading }: GenerateButtonP
   return (
     <div className="w-full relative group">
       
-      {/* Glow highlight behind the button */}
+      {/* Glow highlight behind the button - subtle entrance and hover */}
       {!disabled && !isLoading && (
-        <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 rounded-2xl blur-md opacity-25 group-hover:opacity-40 transition-opacity duration-200 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 rounded-2xl blur-md opacity-20 group-hover:opacity-40 transition-opacity duration-300 ease-out pointer-events-none animate-glow-in" />
       )}
 
       <Button

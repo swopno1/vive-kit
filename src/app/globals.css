@@ -148,16 +148,17 @@
 
   /* Emil's Press Feedback: All interactive elements scale on press */
   button, [role="button"], a[role="button"], [tabindex="0"] {
-    transition: transform var(--duration-fast) var(--ease-out);
+    transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
   }
 
   button:active, [role="button"]:active, a[role="button"]:active, [tabindex="0"]:active {
     transform: scale(0.97);
   }
 
-  /* Better focus rings for accessibility */
+  /* Better focus rings for accessibility - smooth entrance */
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-violet-500;
+    transition: outline-color var(--duration-base) var(--ease-out), outline-width var(--duration-base) var(--ease-out);
   }
 }
 
@@ -193,6 +194,30 @@
     .hover\:scale-110:hover {
       transform: none !important;
     }
+  }
+
+  /* Sophisticated label animations - float up on focus */
+  @keyframes label-float-up {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  label {
+    transition: color var(--duration-base) var(--ease-out),
+                opacity var(--duration-base) var(--ease-out),
+                transform var(--duration-base) var(--ease-out);
+  }
+
+  input:focus-visible ~ label,
+  textarea:focus-visible ~ label {
+    animation: label-float-up var(--duration-base) var(--ease-out);
+    color: theme(colors.blue.500);
   }
 
   /* Animated gradient text */

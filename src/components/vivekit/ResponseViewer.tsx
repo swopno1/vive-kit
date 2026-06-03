@@ -68,7 +68,7 @@ export function ResponseViewer({
   };
 
   return (
-    <Card className="border-slate-800 bg-slate-900/30 backdrop-blur-xl shadow-xl h-full flex flex-col justify-between overflow-hidden">
+    <Card className="border-slate-800 bg-slate-900/30 backdrop-blur-xl shadow-xl h-full flex flex-col justify-between overflow-hidden animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
       
       {/* 1. Header controls */}
       <div className="p-4 border-b border-slate-800/60 bg-slate-950/20 flex justify-between items-center select-none shrink-0">

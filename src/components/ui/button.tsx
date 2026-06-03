@@ -99,8 +99,9 @@ export function Button({
         // Base styles - transition defined in animations.css
         'inline-flex items-center justify-center gap-2',
         'font-medium transition-[transform,box-shadow] duration-100 ease-out',
+        'hover:shadow-sm active:shadow-none',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600',
-        'disabled:opacity-50 disabled:cursor-not-allowed',
+        'disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none',
         // Variant and size
         variantStyles[variant],
         sizeStyles[size],

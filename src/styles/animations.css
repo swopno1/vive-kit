@@ -146,8 +146,42 @@ input[type="reset"]:hover {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   SKELETON & SHIMMER ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Shimmer effect for skeleton loaders */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    ENTRANCE ANIMATIONS
    ═══════════════════════════════════════════════════════════════ */
+
+/* Glow entrance - subtle fade in for background glows */
+@keyframes glow-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
+.animate-glow-in {
+  animation: glow-in var(--duration-slow) var(--ease-out) forwards;
+}
 
 /* Fade in from fully transparent */
 @keyframes fade-in {
@@ -209,21 +243,43 @@ input[type="reset"]:hover {
   animation: bounce-load 0.6s ease-in-out infinite;
 }
 
-/* Copy button success morph - scale up then settle */
+/* Copy button success morph - scale pulse with glow */
 @keyframes copy-success-morph {
   0% {
     transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
   }
   50% {
-    transform: scale(1.08);
+    transform: scale(1.05);
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0.1);
   }
   100% {
     transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+/* Checkmark fade and scale in */
+@keyframes checkmark-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-45deg);
+  }
+  50% {
+    transform: scale(1.15) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
   }
 }
 
 [data-state="success"] {
-  animation: copy-success-morph 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation: copy-success-morph 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.checkmark {
+  animation: checkmark-appear 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -396,6 +452,10 @@ input[type="reset"]:hover {
    <div style={{ animationDelay: 'calc(var(--stagger-sm) * 0)' }}>Item 1</div>
    <div style={{ animationDelay: 'calc(var(--stagger-sm) * 1)' }}>Item 2</div>
    etc.
+
+   Or use data attributes with CSS variables:
+   <div data-stagger="0">Item 1</div>
+   <div data-stagger="1">Item 2</div>
 */
 
 .stagger-0 {
@@ -421,6 +481,14 @@ input[type="reset"]:hover {
 .stagger-5 {
   animation-delay: calc(var(--stagger-sm) * 5);
 }
+
+/* Stagger by data attribute */
+[data-stagger="0"] { animation-delay: 0ms; }
+[data-stagger="1"] { animation-delay: calc(var(--stagger-sm) * 1); }
+[data-stagger="2"] { animation-delay: calc(var(--stagger-sm) * 2); }
+[data-stagger="3"] { animation-delay: calc(var(--stagger-sm) * 3); }
+[data-stagger="4"] { animation-delay: calc(var(--stagger-sm) * 4); }
+[data-stagger="5"] { animation-delay: calc(var(--stagger-sm) * 5); }
 
 /* ═══════════════════════════════════════════════════════════════
    ACCESSIBILITY
