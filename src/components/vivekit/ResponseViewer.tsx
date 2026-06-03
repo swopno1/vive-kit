@@ -57,13 +57,13 @@ export function ResponseViewer({
   const getStatusBadge = () => {
     switch (status) {
       case 'empty':
-        return <span className="text-[9px] bg-slate-900 text-slate-500 border border-slate-800/80 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Idle</span>;
+        return <span className="text-[9px] bg-slate-900 text-slate-300 border border-slate-700/80 px-2 py-0.5 rounded font-bold uppercase tracking-wider" aria-label="Status: Idle">Idle</span>;
       case 'pending':
-        return <span className="text-[9px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider animate-pulse">Drafting</span>;
+        return <span className="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-bold uppercase tracking-wider animate-pulse" aria-label="Status: Drafting">Drafting</span>;
       case 'modified':
-        return <span className="text-[9px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Corrected</span>;
+        return <span className="text-[9px] bg-blue-500/20 text-blue-300 border border-blue-500/40 px-2 py-0.5 rounded font-bold uppercase tracking-wider" aria-label="Status: Corrected">Corrected</span>;
       case 'approved':
-        return <span className="text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded font-bold uppercase tracking-wider flex items-center gap-1">Approved</span>;
+        return <span className="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded font-bold uppercase tracking-wider flex items-center gap-1" aria-label="Status: Approved">Approved</span>;
     }
   };
 
@@ -108,7 +108,7 @@ export function ResponseViewer({
                 variant="ghost"
                 onClick={() => setIsEditing(!isEditing)}
                 data-state={isEditing ? 'editing' : 'viewing'}
-                className={`text-[10px] h-6 px-2.5 rounded border transition-[color,background-color,border-color] duration-150 ease-out cursor-pointer ${
+                className={`text-[10px] h-6 px-2.5 rounded border transition-[color,background-color,border-color] duration-150 ease-out cursor-pointer focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
                   isEditing
                     ? 'text-violet-400 border-violet-500/20 bg-violet-600/10'
                     : 'text-slate-500 border-slate-800 hover:text-slate-300 hover:bg-slate-800/30'
@@ -172,6 +172,8 @@ export function ResponseViewer({
             onClick={handleCopy}
             disabled={isGenerating}
             data-state={copied ? 'success' : 'idle'}
+            aria-live="polite"
+            aria-label={copied ? 'Copied to clipboard' : 'Approve and copy reply'}
             className={`flex-1 rounded-xl h-11 font-bold flex items-center justify-center gap-2 cursor-pointer transition-[background-color,color,box-shadow] duration-200 ease-out transform ${
               copied
                 ? 'bg-emerald-600 hover:bg-emerald-600 text-white shadow-emerald-500/25 shadow-md border-0 scale-100'

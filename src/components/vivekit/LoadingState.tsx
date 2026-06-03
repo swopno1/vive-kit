@@ -13,10 +13,10 @@ export function LoadingState() {
 
       {/* Modern Shimmering Skeletal Blocks */}
       <div className="w-full space-y-2.5 animate-pulse">
-        <div className="h-4 bg-slate-850 rounded-lg w-5/6" />
-        <div className="h-4 bg-slate-850 rounded-lg w-full" />
-        <div className="h-4 bg-slate-850 rounded-lg w-3/4" />
-        <div className="h-4 bg-slate-850 rounded-lg w-4/5" />
+        <div className="h-4 bg-slate-700 rounded-lg w-5/6" />
+        <div className="h-4 bg-slate-700 rounded-lg w-full" />
+        <div className="h-4 bg-slate-700 rounded-lg w-3/4" />
+        <div className="h-4 bg-slate-700 rounded-lg w-4/5" />
       </div>
 
       {/* Pulsing dots indicator */}

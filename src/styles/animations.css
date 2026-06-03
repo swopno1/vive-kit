@@ -97,9 +97,19 @@ input[type="reset"]:hover {
    SPINNER & LOADING STATES
    ═══════════════════════════════════════════════════════════════ */
 
-/* Base spinner rotation */
+/* Base spinner rotation - uses ease-out for natural deceleration (reduces vestibular strain) */
 @keyframes spin {
   to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spinner with natural easing - feels less mechanical and jarring */
+@keyframes spin-ease {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
     transform: rotate(360deg);
   }
 }
@@ -116,11 +126,12 @@ input[type="reset"]:hover {
 }
 
 .spinner {
-  animation: spin 1.5s linear infinite;
+  animation: spin 1.5s cubic-bezier(0.42, 0, 1, 1) infinite;
+  /* ease-out: starts fast, decelerates smoothly (reduces vestibular strain vs linear) */
 }
 
 .spinner--with-pulse {
-  animation: spin 1.5s linear infinite, pulse-brightness 0.4s ease-in-out infinite;
+  animation: spin 1.5s cubic-bezier(0.42, 0, 1, 1) infinite, pulse-brightness 0.4s ease-in-out infinite;
 }
 
 /* Loading overlay with blur transition */
