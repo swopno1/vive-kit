@@ -31,9 +31,9 @@ const NAV = [
   {
     group: 'Analytics',
     items: [
-      { href: '/admin/observability', label: 'Usage Log', icon: Activity },
+      { href: '/admin/usage', label: 'Usage Log', icon: Activity },
       { href: '/admin/performance', label: 'AI Costs', icon: Zap },
-      { href: '/admin/security', label: 'My Data', icon: Lock },
+      { href: '/admin/data', label: 'My Data', icon: Lock },
     ],
   },
 ];
