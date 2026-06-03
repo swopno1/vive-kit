@@ -1,0 +1,293 @@
+/**
+ * Global Animation System
+ *
+ * Emil Kowalski design engineering principles:
+ * - Easing curves are custom, not CSS defaults
+ * - UI animations stay under 300ms
+ * - Only animate transform and opacity
+ * - Stagger creates visual rhythm (30-80ms between elements)
+ * - Reduce motion is respected
+ */
+
+:root {
+  /* Custom easing curves - stronger than CSS defaults */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Standard durations */
+  --duration-fast: 100ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --duration-modal: 400ms;
+
+  /* Stagger delays */
+  --stagger-xs: 30ms;
+  --stagger-sm: 50ms;
+  --stagger-md: 80ms;
+}
+
+/* Respect motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-modal: 0ms;
+    --stagger-xs: 0ms;
+    --stagger-sm: 0ms;
+    --stagger-md: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Button press feedback - applies to all buttons */
+button,
+[role="button"],
+a[class*="button"] {
+  transition: transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+button:active,
+[role="button"]:active,
+a[class*="button"]:active {
+  transform: scale(0.97);
+}
+
+button:hover,
+[role="button"]:hover,
+a[class*="button"]:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Spinner - perceived performance boost with subtle pulse */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-brightness {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.1);
+  }
+}
+
+.spinner {
+  animation: spin 2s linear infinite;
+}
+
+.spinner--with-pulse {
+  animation: spin 2s linear infinite, pulse-brightness 0.4s ease-in-out infinite;
+}
+
+/* Character reveal animation for text */
+@keyframes reveal-char {
+  0% {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in from opacity */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scale + fade entry (used for modals, cards) */
+@keyframes scale-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide up entry */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Clip-path horizontal reveal (left to right) */
+.reveal-ltr {
+  animation: none;
+}
+
+.reveal-ltr[data-entering] {
+  clip-path: inset(0 100% 0 0);
+  animation: reveal-clip-ltr var(--duration-base) var(--ease-out) forwards;
+}
+
+@keyframes reveal-clip-ltr {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Clip-path vertical reveal (bottom to top) */
+.reveal-btm {
+  animation: none;
+}
+
+.reveal-btm[data-entering] {
+  clip-path: inset(0 0 100% 0);
+  animation: reveal-clip-btm var(--duration-base) var(--ease-out) forwards;
+}
+
+@keyframes reveal-clip-btm {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Stagger animation helper */
+@for $i from 1 through 10 {
+  .stagger-\[#{$i}\] {
+    animation-delay: calc(var(--stagger-sm) * #{$i - 1});
+  }
+}
+
+/* CSS-in-JS helper: @starting-style fallback */
+/* Use [data-mounted="true"] for legacy browsers */
+[data-mounted="false"] {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+[data-mounted="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+
+/* Validation banner animation */
+.validation-banner {
+  clip-path: inset(0 0 100% 0);
+  animation: reveal-banner var(--duration-base) var(--ease-out) forwards;
+}
+
+@keyframes reveal-banner {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Success feedback - checkmark morph */
+@keyframes success-fade {
+  0% {
+    opacity: 0;
+    filter: brightness(0.8);
+  }
+  50% {
+    filter: brightness(1.2);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+.success-feedback {
+  animation: success-fade var(--duration-base) var(--ease-out);
+}
+
+/* Loading overlay with blur */
+.loading-overlay {
+  backdrop-filter: blur(2px);
+  opacity: 0.5;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.loading-overlay[data-exiting] {
+  opacity: 0;
+}
+
+/* Counter animation for numbers */
+@keyframes counter-pulse {
+  0% {
+    filter: brightness(0.9);
+  }
+  50% {
+    filter: brightness(1.1);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+.counter-animate {
+  animation: counter-pulse var(--duration-slow) var(--ease-out);
+}
+
+/* Hover lift effect (popover-like) */
+.lift-on-hover {
+  transition: transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.lift-on-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Tooltip rapid appear (skip animation on subsequent) */
+.tooltip {
+  transition: opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+  transform-origin: var(--transform-origin, top);
+}
+
+.tooltip[data-entering] {
+  opacity: 0;
+  transform: scale(0.97);
+}
+
+.tooltip[data-instant] {
+  transition-duration: 0ms;
+}
+
+/* Accessibility: focus indicators */
+*:focus-visible {
+  outline: 2px solid var(--color-focus, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* Touch device: no hover animations */
+@media (hover: none) and (pointer: coarse) {
+  .lift-on-hover:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}

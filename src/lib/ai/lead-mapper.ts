@@ -1,5 +1,5 @@
 import { LeadDataExtraction } from './intelligence/schemas';
-import { CRMClientProfile } from '../../types';
+import { CRMClientProfile, EditableLeadInfo } from '../../types';
 
 /**
  * LeadMapper
@@ -9,28 +9,27 @@ import { CRMClientProfile } from '../../types';
  */
 export class LeadMapper {
   /**
-   * Maps extracted lead data to CRM client profile fields.
+   * Maps extracted lead data to editable lead info fields.
    * Only populates fields with confidence >= minConfidence threshold.
    *
    * @param leadData - Extracted lead data with confidence scores
    * @param minConfidence - Minimum confidence threshold (default: 0.7)
-   * @returns Partial CRM profile with only populated fields
+   * @returns Editable lead info with contact fields
    */
   static mapToCRMProfile(
     leadData: LeadDataExtraction,
     minConfidence: number = 0.7
-  ): Partial<CRMClientProfile> {
-    const profile: Partial<CRMClientProfile> = {};
+  ): EditableLeadInfo {
+    const profile: EditableLeadInfo = {};
 
-    // Map firstName and lastName to name field
-    const firstNameConfident = leadData.firstName.value && leadData.firstName.confidence >= minConfidence;
-    const lastNameConfident = leadData.lastName.value && leadData.lastName.confidence >= minConfidence;
+    // Map firstName
+    if (leadData.firstName.value && leadData.firstName.confidence >= minConfidence) {
+      profile.firstName = leadData.firstName.value;
+    }
 
-    if (firstNameConfident || lastNameConfident) {
-      const parts = [];
-      if (firstNameConfident) parts.push(leadData.firstName.value);
-      if (lastNameConfident) parts.push(leadData.lastName.value);
-      profile.name = parts.join(' ').trim() || undefined;
+    // Map lastName
+    if (leadData.lastName.value && leadData.lastName.confidence >= minConfidence) {
+      profile.lastName = leadData.lastName.value;
     }
 
     // Map email
@@ -48,7 +47,7 @@ export class LeadMapper {
       profile.company = leadData.company.value;
     }
 
-    // Map service interest as comma-separated string or JSON array
+    // Map service interest as comma-separated string
     if (leadData.serviceInterest.values.length > 0 && leadData.serviceInterest.confidence >= minConfidence) {
       profile.serviceInterest = leadData.serviceInterest.values.join(', ');
     }

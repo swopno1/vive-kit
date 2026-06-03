@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { LeadDataExtraction } from '../../lib/ai/intelligence/schemas';
 import { LeadMapper } from '../../lib/ai/lead-mapper';
+import { EditableLeadInfo } from '../../types';
 import { Check, AlertCircle, Edit2 } from 'lucide-react';
 import { Card, CardContent } from '../ui/card';
 
@@ -13,7 +14,7 @@ interface LeadExtractionProps {
 
 export function LeadExtraction({ leadData, onApply }: LeadExtractionProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editValues, setEditValues] = useState(() => LeadMapper.mapToCRMProfile(leadData));
+  const [editValues, setEditValues] = useState<EditableLeadInfo>(() => LeadMapper.mapToCRMProfile(leadData));
   const confidence = LeadMapper.getConfidenceBreakdown(leadData);
 
   const handleSave = () => {

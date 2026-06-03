@@ -45,6 +45,19 @@ export interface CustomerProfile {
   createdAt?: string;
 }
 
+/**
+ * Editable lead contact information extracted from conversations
+ * Used for displaying and editing lead data in the intelligence dashboard
+ */
+export interface EditableLeadInfo {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  company?: string;
+  serviceInterest?: string;
+}
+
 export interface Conversation {
   id?: string;
   customerId?: string;
